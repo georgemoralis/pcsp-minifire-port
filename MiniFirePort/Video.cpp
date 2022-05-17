@@ -4,132 +4,190 @@
 #include "Memory.h"
 #include "Cpu.h"
 #include <emmintrin.h>
+#include <tchar.h>
+
+#define GLEW_STATIC
+#include <gl/glew.h>
 
 CVideo &Video = CVideo::GetSingleton();
 
+
+HDC			hDC = NULL;		// Private GDI Device Context
+HGLRC		hRC = NULL;		// Permanent Rendering Context
+GLuint texFb;
+float texS, texT;
+
+static u32 makePow2(u32 n) {
+	--n;
+	n = (n >> 1) | n;
+	n = (n >> 2) | n;
+	n = (n >> 4) | n;
+	n = (n >> 8) | n;
+	n = (n >> 16) | n;
+	return ++n;
+}
+
+static int getPixelFormatBytes(int pixelformat) {
+	return pixelformat == PSP_DISPLAY_PIXEL_FORMAT_8888 ? 4 : 2;
+}
+
+static int getPixelFormatGL(int pixelformat) {
+	switch (pixelformat) {
+	case PSP_DISPLAY_PIXEL_FORMAT_565:
+		return GL_UNSIGNED_SHORT_5_6_5_REV;
+	case PSP_DISPLAY_PIXEL_FORMAT_5551:
+		return GL_UNSIGNED_SHORT_1_5_5_5_REV;
+	case PSP_DISPLAY_PIXEL_FORMAT_4444:
+		return GL_UNSIGNED_SHORT_4_4_4_4_REV;
+	default:
+		return GL_UNSIGNED_BYTE;
+	}
+}
+
 bool CVideo::Initialize() {
-	DDSURFACEDESC2 ddsd;
-	HRESULT hr;
+	GLuint		PixelFormat;
 
-	Finalize();
+	static	PIXELFORMATDESCRIPTOR pfd =				// pfd Tells Windows How We Want Things To Be
+	{
+		sizeof(PIXELFORMATDESCRIPTOR),				// Size Of This Pixel Format Descriptor
+		1,											// Version Number
+		PFD_DRAW_TO_WINDOW |						// Format Must Support Window
+		PFD_SUPPORT_OPENGL |						// Format Must Support OpenGL
+		PFD_DOUBLEBUFFER,							// Must Support Double Buffering
+		PFD_TYPE_RGBA,								// Request An RGBA Format
+		32,										// Select Our Color Depth
+		0, 0, 0, 0, 0, 0,							// Color Bits Ignored
+		0,											// No Alpha Buffer
+		0,											// Shift Bit Ignored
+		0,											// No Accumulation Buffer
+		0, 0, 0, 0,									// Accumulation Bits Ignored
+		16,											// 16Bit Z-Buffer (Depth Buffer)  
+		0,											// No Stencil Buffer
+		0,											// No Auxiliary Buffer
+		PFD_MAIN_PLANE,								// Main Drawing Layer
+		0,											// Reserved
+		0, 0, 0										// Layer Masks Ignored
+	};
 
-	hr = DirectDrawCreateEx(NULL, (LPVOID *)&ddraw, IID_IDirectDraw7, NULL);
-	if (FAILED(hr)) return false;
+	if (!(hDC = GetDC((HWND)MainWindow.GetHandle())))							// Did We Get A Device Context?
+	{
+		//KillGLWindow();								// Reset The Display
+		MessageBox(NULL, _T("Can't Create A GL Device Context."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;								// Return FALSE
+	}
 
-	hr = ddraw->SetCooperativeLevel(
-		MainWindow.GetHandle(),
-		DDSCL_NORMAL);
-	if (FAILED(hr)) return false;
+	if (!(PixelFormat = ChoosePixelFormat(hDC, &pfd)))	// Did Windows Find A Matching Pixel Format?
+	{
+		//KillGLWindow();								// Reset The Display
+		MessageBox(NULL, _T("Can't Find A Suitable PixelFormat."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;								// Return FALSE
+	}
 
-	ZeroMemory(&ddsd, sizeof(DDSURFACEDESC2));
-	ddsd.dwSize = sizeof(DDSURFACEDESC2);
-	ddsd.dwFlags = DDSD_CAPS;
-	ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_VIDEOMEMORY;
-	hr = ddraw->CreateSurface(&ddsd, &primary, NULL);
-	if (FAILED(hr)) return false;
+	if (!SetPixelFormat(hDC, PixelFormat, &pfd))		// Are We Able To Set The Pixel Format?
+	{
+		//KillGLWindow();								// Reset The Display
+		MessageBox(NULL, _T("Can't Set The PixelFormat."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;								// Return FALSE
+	}
 
-	hr = ddraw->CreateClipper(0, &clipper, NULL);
-	if (FAILED(hr)) return false;
+	if (!(hRC = wglCreateContext(hDC)))				// Are We Able To Get A Rendering Context?
+	{
+		//KillGLWindow();								// Reset The Display
+		MessageBox(NULL, _T("Can't Create A GL Rendering Context."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;								// Return FALSE
+	}
 
-	hr = clipper->SetHWnd(0, MainWindow.GetHandle());
-	if (FAILED(hr)) return false;
+	if (!wglMakeCurrent(hDC, hRC))					// Try To Activate The Rendering Context
+	{
+		//KillGLWindow();								// Reset The Display
+		MessageBox(NULL, _T("Can't Activate The GL Rendering Context."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;								// Return FALSE
+	}
 
-	hr = primary->SetClipper(clipper);
-	if (FAILED(hr)) return false;
+	GLenum glewErr;
+	if ((glewErr = glewInit()) != GLEW_OK) {
+		//MessageBox(NULL, (char*)glewGetErrorString(glewErr), "ERROR", MB_OK | MB_ICONEXCLAMATION);
+		return false;
+	}
 
 	vram = Memory.vram;
 
-	ZeroMemory(&ddsd, sizeof(DDSURFACEDESC2));
-	ddsd.dwSize = sizeof(DDSURFACEDESC2);
-	ddsd.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT;
-	ddsd.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
-	ddsd.dwWidth = 480;
-	ddsd.dwHeight = 272;
-	hr = ddraw->CreateSurface(&ddsd, &fb, NULL);
-	if (FAILED(hr)) return false;
+	glGenTextures(1, &texFb);
 
-	QueryPerformanceFrequency((LARGE_INTEGER *)&cntFreq);
-	QueryPerformanceCounter((LARGE_INTEGER *)&cntStart);
+	QueryPerformanceFrequency((LARGE_INTEGER*)&cntFreq);
+	QueryPerformanceCounter((LARGE_INTEGER*)&cntStart);
 	cntFrame = 0;
 	prevCycles = 0;
 
 	return true;
+
 }
 
 void CVideo::Finalize() {
-	if (fb) {
-		fb->Release();
-		fb = NULL;
-	}
-	if (clipper) {
-		clipper->Release();
-		clipper = NULL;
-	}
-	if (primary) {
-		primary->Release();
-		primary = NULL;
-	}
-	if (ddraw) {
-		ddraw->Release();
-		ddraw = NULL;
-	}
+	wglMakeCurrent(NULL, NULL);
+	wglDeleteContext(hRC);
+	ReleaseDC((HWND)MainWindow.GetHandle(), hDC);
 }
 
 void CVideo::Draw() {
-	if (primary->IsLost())
-		primary->Restore();
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-	RECT rcDst;
-	POINT pt = { 0, 0 };
+	glViewport(0, 0, pspWidth, pspHeight);
 
-	GetClientRect(MainWindow.GetHandle(), &rcDst);
-	ClientToScreen(MainWindow.GetHandle(), &pt);
-	OffsetRect(&rcDst, pt.x, pt.y);
-	rcDst.right = rcDst.left + 480;
-	rcDst.bottom = rcDst.top + 272;
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_FOG);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_LOGIC_OP);
+	glDisable(GL_STENCIL_TEST);
 
-	HRESULT hr = primary->Blt(&rcDst, fb, NULL, DDBLT_ASYNC, NULL);
-	assert(SUCCEEDED(hr));
-}
+	glTexEnvf(GL_TEXTURE_ENV, GL_RGB_SCALE, 1.0f);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_TEXTURE);
 
-void CVideo::ConvertFormat() {
-	DDSURFACEDESC2 ddsd;
-	ddsd.dwSize = sizeof(DDSURFACEDESC2);
-	fb->Lock(NULL, &ddsd, 0, NULL);
-	__m128i *dst = (__m128i *)ddsd.lpSurface;
+	glPixelStorei(GL_UNPACK_ALIGNMENT, getPixelFormatBytes(pixelFormatFb));
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, pspPitch);
 
-	static const __declspec(align(16)) u32 mask_ag[4] = {
-		0xFF00FF00, 0xFF00FF00, 0xFF00FF00, 0xFF00FF00
-	};
-	static const __declspec(align(16)) u32 mask_r[4] = {
-		0x00FF0000, 0x00FF0000, 0x00FF0000, 0x00FF0000
-	};
-	static const __declspec(align(16)) u32 mask_b[4] = {
-		0x000000FF, 0x000000FF, 0x000000FF, 0x000000FF
-	};
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
 
-	__m128i ag = _mm_load_si128((__m128i *)mask_ag);
-	__m128i r  = _mm_load_si128((__m128i *)mask_r);
-	__m128i b  = _mm_load_si128((__m128i *)mask_b);
+	glOrtho(0.0, pspWidth, pspHeight, 0.0, -1.0, 1.0);
 
-	__m128i *p = (__m128i *)(vram + pspAddr);
-	for (u32 y = 0; y < 272; ++y) {
-		for (u32 x = 0; x < 480 / 4; ++x) {
-			__m128i px = _mm_load_si128(p + x);
-			__m128i t1 = _mm_and_si128(px, r);
-			__m128i t2 = _mm_and_si128(px, b);
-			t1 = _mm_srai_epi32(t1, 16);
-			t2 = _mm_slli_epi32(t2, 16);
-			px = _mm_and_si128(px, ag);
-			px = _mm_or_si128(px, t1);
-			px = _mm_or_si128(px, t2);
-			_mm_storeu_si128(dst + x, px);
-		}
-		dst += ddsd.lPitch / 16;
-		p += 512 / 4;
-	}
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
 
-	fb->Unlock(NULL);
+	glEnable(GL_TEXTURE_2D);
+	glFrontFace(GL_CW);
+	glBindTexture(GL_TEXTURE_2D, texFb);
+	glBegin(GL_QUADS);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	glTexCoord2f(texS, texT);
+	glVertex2i(pspWidth, pspHeight);
+
+	glTexCoord2f(0.0f, texT);
+	glVertex2i(0, pspHeight);
+
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex2i(0, 0);
+
+	glTexCoord2f(texS, 0.0f);
+	glVertex2i(pspWidth, 0);
+
+	glEnd();
+
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopAttrib();
+
+	::SwapBuffers(hDC);
 }
 
 PspDisplayErrorCodes CVideo::sceSetDisplayMode(u32 mode, u32 width, u32 height) {
@@ -164,11 +222,39 @@ PspDisplayErrorCodes CVideo::sceDisplaySetFrameBuf(
 	else pspAddr = topaddr - VramStart;
 
 
-	ConvertFormat();
+	if (pixelFormatFb != pixelformat ||
+		pspPitch != bufferwidth) {
+		glBindTexture(GL_TEXTURE_2D, texFb);
+		glTexImage2D(GL_TEXTURE_2D, 0,
+			GL_RGB,
+			bufferwidth, makePow2(pspHeight), 0,
+			GL_RGBA,
+			getPixelFormatGL(pixelformat), NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+		pixelFormatFb = pixelformat;
+		pspPitch = bufferwidth;
+	}
+
+	glBindTexture(GL_TEXTURE_2D, texFb);
+	int pixelFormatGL = getPixelFormatGL(pixelformat);
+	glTexSubImage2D(
+		GL_TEXTURE_2D, 0,
+		0, 0, bufferwidth, pspHeight,
+		pixelFormatGL == GL_UNSIGNED_SHORT_5_6_5_REV ? GL_RGB : GL_RGBA,
+		pixelFormatGL, vram + pspAddr);
+
+	texS = (float)pspWidth / (float)bufferwidth;
+	texT = (float)pspHeight / (float)makePow2(pspHeight);
+
 	Draw();
-	
+
 	++cntFrame;
-	QueryPerformanceCounter((LARGE_INTEGER *)&cntEnd);
+
+	QueryPerformanceCounter((LARGE_INTEGER*)&cntEnd);
 	if ((cntEnd - cntStart) > cntFreq) {
 		double fix = (double)cntFreq / (cntEnd - cntStart);
 		_stprintf_s(

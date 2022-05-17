@@ -39,25 +39,18 @@ public:
 		PspDisplaySetBufSync sync);
 
 private:
-	CVideo()
-		: ddraw(NULL),
-		  primary(NULL), clipper(NULL),
-		  fb(NULL) { }
-
-	void ConvertFormat();
-
-	IDirectDraw7 *ddraw;
-	IDirectDrawSurface7 *primary;
-	IDirectDrawClipper *clipper;
+	CVideo(){ }
 
 	u8 *vram;
-	IDirectDrawSurface7 *fb;
 
 	u32 pspMode;
 	u32 pspWidth;
 	u32 pspPitch;
 	u32 pspHeight;
 	u32 pspAddr;
+	u32 pixelFormatFb;
+	u32 bufferWidthFb;
+
 
 	TCHAR windowTitle[1024];
 	u64 cntFreq;

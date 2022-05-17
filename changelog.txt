@@ -1,0 +1,8 @@
+17/05/2022
+==========
+-Added old minifire demo as minimal psp emulator (demo code is inside , some other hacks applied as well)
+-Made an x64 version . Interpreter is faster (about 10%) dynarec only works on 32-bit (reasonable)
+-Replaced old directX code with opengl render
+-Added glew as depedency (nuget seems to have an old version so added it manually)
+
+

@@ -72,7 +72,7 @@ void CCpu::Initialize() {
 	lo = 0;
 	hi = 0;
 	instr = 0;
-	pc = 0x08900050;
+	pc = 0x08900050; //skip Create Thread in minifire
 	cycles = 0;
 }
 
