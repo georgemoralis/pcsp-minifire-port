@@ -12,6 +12,6 @@ This can only run minifire demo which is embedded inside source , so running exe
 
 # TODO
 
-* update opengl from v1 to v3 and use glew as a step in for adding imgui 
+* update opengl from v1 to v3 and use glfw as a step in for adding imgui 
 * use imgui
 * make it a proper psp emulator rather than hackish minifire demo port
