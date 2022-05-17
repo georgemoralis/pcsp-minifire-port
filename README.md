@@ -1,4 +1,7 @@
 # pcsp
+
+![Minifire demo](https://github.com/georgemoralis/pcsp/blob/main/screenshot/minifiredemo.png) 
+
 Test code for psp emulator
 
 win32 build : interpeter and recompiler works (hmm recompiler is fast  , interpreter less than 1 fps)
