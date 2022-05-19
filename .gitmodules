@@ -2,3 +2,7 @@
 	path = third_party/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = master
+[submodule "third_party/SDL"]
+	path = third_party/SDL
+	url = https://github.com/SDL-mirror/SDL.git
+	branch = master

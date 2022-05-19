@@ -1,3 +1,8 @@
+19/05/2022
+==========
+-Started work on adding imgui . 
+-First step , reorganize folders
+
 17/05/2022
 ==========
 -Added old minifire demo as minimal psp emulator (demo code is inside , some other hacks applied as well)

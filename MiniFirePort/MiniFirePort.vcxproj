@@ -122,12 +122,13 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\External\glew\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\External\glew\Include;..\third_party\SDL\include;..\third_party\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;../Output/$(Configuration)/$(Platform)/glew.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;../Output/$(Configuration)/$(Platform)/SDL2.lib;../Output/$(Configuration)/$(Platform)/SDL2main.lib;../Output/$(Configuration)/$(Platform)/imgui-core.lib;../Output/$(Configuration)/$(Platform)/glew.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -173,20 +174,23 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\External\glew\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\External\glew\Include;..\third_party\SDL\include;..\third_party\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;../Output/$(Configuration)/$(Platform)/glew.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shell32.lib;opengl32.lib;GLU32.lib;../Output/$(Configuration)/$(Platform)/SDL2.lib;../Output/$(Configuration)/$(Platform)/SDL2main.lib;../Output/$(Configuration)/$(Platform)/imgui-core.lib;../Output/$(Configuration)/$(Platform)/glew.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>
       </OptimizeReferences>
       <EnableCOMDATFolding>
       </EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cpu.cpp" />
+    <ClCompile Include="imgui_impl_sdl.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MiniFirePort.cpp" />
@@ -196,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cpu.h" />
+    <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Recompiler.h" />
