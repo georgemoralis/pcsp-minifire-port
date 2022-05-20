@@ -1,8 +1,8 @@
-#include "StdAfx.h"
+#include "PCSPCommon.h"
 #include "Cpu.h"
 #include "Memory.h"
 #include "Video.h"
-#include "MainWindow.h"
+//#include "MainWindow.h"
 
 #define _Rd_ ((Cpu.instr >> 11) & 0x1F)
 #define _Rt_ ((Cpu.instr >> 16) & 0x1F)
@@ -109,7 +109,7 @@ void CCpu::SYSCALL() {
 		Cpu.gpr[2] = (u32)rand() * (u32)rand();
 		break;
 	case 0x020EB:
-		MainWindow.Finalize();
+		//MainWindow.Finalize();
 		break;
 	case 0x0213A:
 		Cpu.gpr[2] = Video.sceSetDisplayMode(

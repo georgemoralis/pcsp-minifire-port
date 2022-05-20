@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "PCSPCommon.h"
 #include "Memory.h"
 
 CMemory &Memory = CMemory::GetSingleton();

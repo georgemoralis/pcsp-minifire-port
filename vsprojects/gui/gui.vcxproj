@@ -19,9 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\gui\GL\gl3w.c" />
+    <ClCompile Include="..\..\src\gui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\..\src\gui\imgui_impl_sdl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\gui\GL\gl3w.h" />
+    <ClInclude Include="..\..\src\gui\GL\glcorearb.h" />
+    <ClInclude Include="..\..\src\gui\imgui_impl_opengl3.h" />
     <ClInclude Include="..\..\src\gui\imgui_impl_sdl.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

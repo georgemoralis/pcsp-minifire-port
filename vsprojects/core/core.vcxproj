@@ -19,7 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="..\..\src\core\Cpu.cpp" />
+    <ClCompile Include="..\..\src\core\Memory.cpp" />
+    <ClCompile Include="..\..\src\core\Recompiler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\core\Cpu.h" />
+    <ClInclude Include="..\..\src\core\Memory.h" />
+    <ClInclude Include="..\..\src\core\PCSPCommon.h" />
+    <ClInclude Include="..\..\src\core\Recompiler.h" />
+    <ClInclude Include="..\..\src\core\Video.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -79,11 +88,11 @@
     <IncludePath>..\..\third_party\zlib;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\..\third_party\zlib;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\src;$(IncludePath)</IncludePath>
     <OutDir>..\..\Output\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\..\third_party\zlib;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\src;$(IncludePath)</IncludePath>
     <OutDir>..\..\Output\$(Configuration)\$(Platform)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

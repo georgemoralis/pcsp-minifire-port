@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "PCSPCommon.h"
 #include "Recompiler.h"
 #include "Cpu.h"
 #include "Memory.h"
