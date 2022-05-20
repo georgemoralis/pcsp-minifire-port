@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\src\core\Cpu.cpp" />
     <ClCompile Include="..\..\src\core\Memory.cpp" />
     <ClCompile Include="..\..\src\core\Recompiler.cpp" />
+    <ClCompile Include="..\..\src\core\Video.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\core\Cpu.h" />

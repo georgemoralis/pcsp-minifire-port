@@ -25,14 +25,16 @@ enum PspDisplayErrorCodes {
 class CVideo : public Singleton<CVideo> {
 	friend class Singleton<CVideo>;
 public:
-	~CVideo() { Finalize(); }
+        ~CVideo() { /*
+            Finalize();*/
+        }
 
-	bool Initialize();
-	void Finalize();
+	bool Initialize(unsigned int textureIdGPU);
+        //void Finalize();
 
 	void Draw();
 
-	PspDisplayErrorCodes sceSetDisplayMode(u32 mode, u32 width, u32 height);
+	 PspDisplayErrorCodes sceSetDisplayMode(u32 mode, u32 width, u32 height);
 	PspDisplayErrorCodes sceDisplaySetFrameBuf(
 		u32 topaddr, u32 bufferwidth,
 		PspDisplayPixelFormat pixelformat,

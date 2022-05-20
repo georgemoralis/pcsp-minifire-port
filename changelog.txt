@@ -1,3 +1,8 @@
+20/05/2022
+==========
+-More folder reorganization.
+-Added sdl 2.0.9 since latest 2.0.14 version has some issue with dynapi linking..
+
 19/05/2022
 ==========
 -Started work on adding imgui . 

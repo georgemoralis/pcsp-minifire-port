@@ -111,16 +111,16 @@ void CCpu::SYSCALL() {
 	case 0x020EB:
 		//MainWindow.Finalize();
 		break;
-	case 0x0213A:
+        /* case 0x0213A:
 		Cpu.gpr[2] = Video.sceSetDisplayMode(
 			Cpu.gpr[4], Cpu.gpr[5], Cpu.gpr[6]);
 		break;
 	case 0x0213F:
-		Cpu.gpr[2] = Video.sceDisplaySetFrameBuf(
+            Cpu.gpr[2] = Video.sceDisplaySetFrameBuf(
 			Cpu.gpr[4], Cpu.gpr[5],
 			(PspDisplayPixelFormat)Cpu.gpr[6],
 			(PspDisplaySetBufSync)Cpu.gpr[7]);
-		break;
+		break;*/
 	case 0x02147: // sceDisplayWaitVblankStart
 		Cpu.gpr[2] = 0;
 		break;
@@ -138,8 +138,8 @@ void CCpu::SYSCALL() {
 			Cpu.gpr[2] = i;
 		}
 		break;
-	default:
-		assert(0);
+	//default:
+		//assert(0);
 	}
 }
 void CCpu::MFHI() { if (_Rd_) Rd = Cpu.hi; }
