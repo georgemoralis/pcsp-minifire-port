@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="HLE">
+      <UniqueIdentifier>{63e2ef36-2ebf-4a7f-8e8e-df92cbb02b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLE\kernel">
+      <UniqueIdentifier>{34a12a2f-6edb-4f08-b89c-2acb03d7a10a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLE\kernel\types">
+      <UniqueIdentifier>{25aa905b-0d41-4562-9b70-d96509b69f3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLE\kernel\managers">
+      <UniqueIdentifier>{e1a434ba-b01d-4d6e-a7b6-a47ec394e0e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\Memory.cpp">
@@ -26,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\core\Video.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\HLE\kernel\managers\SceUidManager.cpp">
+      <Filter>HLE\kernel\managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +58,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\core\Recompiler.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\HLE\kernel\types\SceUid.h">
+      <Filter>HLE\kernel\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\HLE\kernel\managers\SceUidManager.h">
+      <Filter>HLE\kernel\managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

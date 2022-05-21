@@ -20,12 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\core\Cpu.cpp" />
+    <ClCompile Include="..\..\src\core\HLE\kernel\managers\SceUidManager.cpp" />
     <ClCompile Include="..\..\src\core\Memory.cpp" />
     <ClCompile Include="..\..\src\core\Recompiler.cpp" />
     <ClCompile Include="..\..\src\core\Video.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\core\Cpu.h" />
+    <ClInclude Include="..\..\src\core\HLE\kernel\managers\SceUidManager.h" />
+    <ClInclude Include="..\..\src\core\HLE\kernel\types\SceUid.h" />
     <ClInclude Include="..\..\src\core\Memory.h" />
     <ClInclude Include="..\..\src\core\PCSPCommon.h" />
     <ClInclude Include="..\..\src\core\Recompiler.h" />
@@ -112,6 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,6 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

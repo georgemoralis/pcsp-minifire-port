@@ -6,3 +6,7 @@
 	path = third_party/SDL
 	url = https://github.com/spurious/SDL-mirror.git
 	branch = release-2.0.9
+[submodule "third_party/glew"]
+	path = third_party/glew
+	url = https://github.com/nigels-com/glew.git
+	branch = master
