@@ -8,6 +8,7 @@
 
 #define GLEW_STATIC
 #include <gl/glew.h>
+#include <glfw3.h>
 
 CVideo &Video = CVideo::GetSingleton();
 
@@ -44,65 +45,41 @@ static int getPixelFormatGL(int pixelformat) {
 	}
 }
 
+static void error_callback(int error, const char* description)
+{
+	fprintf(stderr, "Error: %s\n", description);
+}
+
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+GLFWwindow* window;
 bool CVideo::Initialize() {
-	GLuint		PixelFormat;
+	
 
-	static	PIXELFORMATDESCRIPTOR pfd =				// pfd Tells Windows How We Want Things To Be
-	{
-		sizeof(PIXELFORMATDESCRIPTOR),				// Size Of This Pixel Format Descriptor
-		1,											// Version Number
-		PFD_DRAW_TO_WINDOW |						// Format Must Support Window
-		PFD_SUPPORT_OPENGL |						// Format Must Support OpenGL
-		PFD_DOUBLEBUFFER,							// Must Support Double Buffering
-		PFD_TYPE_RGBA,								// Request An RGBA Format
-		32,										// Select Our Color Depth
-		0, 0, 0, 0, 0, 0,							// Color Bits Ignored
-		0,											// No Alpha Buffer
-		0,											// Shift Bit Ignored
-		0,											// No Accumulation Buffer
-		0, 0, 0, 0,									// Accumulation Bits Ignored
-		16,											// 16Bit Z-Buffer (Depth Buffer)  
-		0,											// No Stencil Buffer
-		0,											// No Auxiliary Buffer
-		PFD_MAIN_PLANE,								// Main Drawing Layer
-		0,											// Reserved
-		0, 0, 0										// Layer Masks Ignored
-	};
+	glfwSetErrorCallback(error_callback);
 
-	if (!(hDC = GetDC((HWND)MainWindow.GetHandle())))							// Did We Get A Device Context?
+	if (!glfwInit())
+		exit(EXIT_FAILURE);
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+
+	window = glfwCreateWindow(480, 272, "Simple example", NULL, NULL);
+
+	if (!window)
 	{
-		//KillGLWindow();								// Reset The Display
-		MessageBox(NULL, _T("Can't Create A GL Device Context."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
-		return FALSE;								// Return FALSE
+		glfwTerminate();
+		exit(EXIT_FAILURE);
 	}
 
-	if (!(PixelFormat = ChoosePixelFormat(hDC, &pfd)))	// Did Windows Find A Matching Pixel Format?
-	{
-		//KillGLWindow();								// Reset The Display
-		MessageBox(NULL, _T("Can't Find A Suitable PixelFormat."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
-		return FALSE;								// Return FALSE
-	}
+	glfwSetKeyCallback(window, key_callback);
 
-	if (!SetPixelFormat(hDC, PixelFormat, &pfd))		// Are We Able To Set The Pixel Format?
-	{
-		//KillGLWindow();								// Reset The Display
-		MessageBox(NULL, _T("Can't Set The PixelFormat."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
-		return FALSE;								// Return FALSE
-	}
+	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);
 
-	if (!(hRC = wglCreateContext(hDC)))				// Are We Able To Get A Rendering Context?
-	{
-		//KillGLWindow();								// Reset The Display
-		MessageBox(NULL, _T("Can't Create A GL Rendering Context."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
-		return FALSE;								// Return FALSE
-	}
-
-	if (!wglMakeCurrent(hDC, hRC))					// Try To Activate The Rendering Context
-	{
-		//KillGLWindow();								// Reset The Display
-		MessageBox(NULL, _T("Can't Activate The GL Rendering Context."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION);
-		return FALSE;								// Return FALSE
-	}
 
 	GLenum glewErr;
 	if ((glewErr = glewInit()) != GLEW_OK) {
@@ -124,9 +101,8 @@ bool CVideo::Initialize() {
 }
 
 void CVideo::Finalize() {
-	wglMakeCurrent(NULL, NULL);
-	wglDeleteContext(hRC);
-	ReleaseDC((HWND)MainWindow.GetHandle(), hDC);
+	glfwDestroyWindow(window);
+	glfwTerminate();
 }
 
 void CVideo::Draw() {
@@ -187,7 +163,14 @@ void CVideo::Draw() {
 	glMatrixMode(GL_MODELVIEW);
 	glPopAttrib();
 
-	::SwapBuffers(hDC);
+	glfwSwapBuffers(window);
+	glfwPollEvents();
+	if (glfwWindowShouldClose(window))
+	{
+		glfwDestroyWindow(window);
+
+		glfwTerminate();
+	}
 }
 
 PspDisplayErrorCodes CVideo::sceSetDisplayMode(u32 mode, u32 width, u32 height) {
@@ -255,7 +238,7 @@ PspDisplayErrorCodes CVideo::sceDisplaySetFrameBuf(
 	++cntFrame;
 
 	QueryPerformanceCounter((LARGE_INTEGER*)&cntEnd);
-	if ((cntEnd - cntStart) > cntFreq) {
+	/*if ((cntEnd - cntStart) > cntFreq) {
 		double fix = (double)cntFreq / (cntEnd - cntStart);
 		_stprintf_s(
 			windowTitle,
@@ -276,7 +259,7 @@ PspDisplayErrorCodes CVideo::sceDisplaySetFrameBuf(
 		if (msg.message == WM_QUIT) break;
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
-	}
+	}*/
 
 	return SCE_DISPLAY_ERROR_OK;
 }
