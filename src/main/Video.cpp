@@ -8,6 +8,7 @@
 #define GLEW_STATIC
 #include <gl/glew.h>
 #include <glfw3.h>
+#include <sstream>
 
 CVideo &Video = CVideo::GetSingleton();
 
@@ -16,6 +17,7 @@ HDC			hDC = NULL;		// Private GDI Device Context
 HGLRC		hRC = NULL;		// Permanent Rendering Context
 GLuint texFb;
 float texS, texT;
+std::string windowtitle = "Emulated Minifire";
 
 static u32 makePow2(u32 n) {
 	--n;
@@ -66,7 +68,7 @@ bool CVideo::Initialize() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(480, 272, "Emulated MiniFire", NULL, NULL);
+	window = glfwCreateWindow(480, 272, windowtitle.c_str(), NULL, NULL);
 
 	if (!window)
 	{
@@ -238,28 +240,16 @@ PspDisplayErrorCodes CVideo::sceDisplaySetFrameBuf(
 	++cntFrame;
 
 	QueryPerformanceCounter((LARGE_INTEGER*)&cntEnd);
-	/*if ((cntEnd - cntStart) > cntFreq) {
+	if ((cntEnd - cntStart) > cntFreq) {
 		double fix = (double)cntFreq / (cntEnd - cntStart);
-		_stprintf_s(
-			windowTitle,
-			sizeof(windowTitle) / sizeof(TCHAR),
-			_T("%s (FPS: %.2lf MIPS: %.5lf)"),
-			MainWindow.GetTitle(),
-			cntFrame * fix,
-			(Cpu.cycles - prevCycles) * fix /
-			1000000.0f);
-		MainWindow.SetTitle(windowTitle);
+        char title[256];
+        title[255] = '\0';
+        snprintf(title, 255, "%s (FPS: %.2lf MIPS: %.5lf)", windowtitle.c_str(),cntFrame * fix, (Cpu.cycles - prevCycles) * fix / 1000000.0f);
+        glfwSetWindowTitle(window, title);
 		cntFrame = 0;
 		cntStart = cntEnd;
 		prevCycles = Cpu.cycles;
 	}
-
-	MSG msg;
-	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-		if (msg.message == WM_QUIT) break;
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}*/
 
 	return SCE_DISPLAY_ERROR_OK;
 }
