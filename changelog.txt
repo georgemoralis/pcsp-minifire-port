@@ -1,3 +1,7 @@
+24/05/2022
+==========
+-We can now render to glfx window (using old opengl2 code ...) it is not perfect but it works
+
 17/05/2022
 ==========
 -Added old minifire demo as minimal psp emulator (demo code is inside , some other hacks applied as well)
