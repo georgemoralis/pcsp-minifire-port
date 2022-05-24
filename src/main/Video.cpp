@@ -1,6 +1,5 @@
-#include "StdAfx.h"
+#include "PCSPCommon.h"
 #include "Video.h"
-#include "MainWindow.h"
 #include "Memory.h"
 #include "Cpu.h"
 #include <emmintrin.h>
@@ -67,7 +66,7 @@ bool CVideo::Initialize() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(480, 272, "Simple example", NULL, NULL);
+	window = glfwCreateWindow(480, 272, "Emulated MiniFire", NULL, NULL);
 
 	if (!window)
 	{
@@ -170,6 +169,7 @@ void CVideo::Draw() {
 		glfwDestroyWindow(window);
 
 		glfwTerminate();
+                exit(0);
 	}
 }
 
