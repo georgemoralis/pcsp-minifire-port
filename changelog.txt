@@ -5,6 +5,7 @@
 -Elf32ProgramHeader class completed!
 -Some rewrite to memory class
 -Mostly finised Elf32SectionHeader
+-Implemented elf32 class
 
 24/05/2022
 ==========

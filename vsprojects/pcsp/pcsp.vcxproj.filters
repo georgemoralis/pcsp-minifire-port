@@ -14,6 +14,9 @@
     <ClCompile Include="..\..\src\main\format\Elf32SectionHeader.cpp">
       <Filter>format</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\main\format\Elf32.cpp">
+      <Filter>format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\main\Cpu.h" />
@@ -29,6 +32,9 @@
       <Filter>format</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\main\format\Elf32SectionHeader.h">
+      <Filter>format</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\main\format\Elf32.h">
       <Filter>format</Filter>
     </ClInclude>
   </ItemGroup>

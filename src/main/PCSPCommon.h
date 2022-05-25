@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <fstream>
 #include <vector>
+#include <map>
 
 typedef __int8  s8;
 typedef __int16 s16;
