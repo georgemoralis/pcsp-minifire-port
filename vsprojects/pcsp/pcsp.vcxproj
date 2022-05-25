@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main\Cpu.cpp" />
+    <ClCompile Include="..\..\src\main\format\Elf32Header.cpp" />
     <ClCompile Include="..\..\src\main\main.cpp" />
     <ClCompile Include="..\..\src\main\Memory.cpp" />
     <ClCompile Include="..\..\src\main\Recompiler.cpp" />
@@ -160,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\main\Cpu.h" />
+    <ClInclude Include="..\..\src\main\format\Elf32Header.h" />
     <ClInclude Include="..\..\src\main\Memory.h" />
     <ClInclude Include="..\..\src\main\PCSPCommon.h" />
     <ClInclude Include="..\..\src\main\Recompiler.h" />

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\main\Cpu.cpp" />
+    <ClCompile Include="..\..\src\main\main.cpp" />
+    <ClCompile Include="..\..\src\main\Memory.cpp" />
+    <ClCompile Include="..\..\src\main\Recompiler.cpp" />
+    <ClCompile Include="..\..\src\main\Video.cpp" />
+    <ClCompile Include="..\..\src\main\format\Elf32Header.cpp">
+      <Filter>format</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\main\Cpu.h" />
+    <ClInclude Include="..\..\src\main\Memory.h" />
+    <ClInclude Include="..\..\src\main\PCSPCommon.h" />
+    <ClInclude Include="..\..\src\main\Recompiler.h" />
+    <ClInclude Include="..\..\src\main\Singleton.h" />
+    <ClInclude Include="..\..\src\main\Video.h" />
+    <ClInclude Include="..\..\src\main\format\Elf32Header.h">
+      <Filter>format</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="format">
+      <UniqueIdentifier>{66f613cc-370c-45c9-a828-a08ddcf1dbe3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
