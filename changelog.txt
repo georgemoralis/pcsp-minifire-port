@@ -3,6 +3,8 @@
 -Stared to play with loader a bit
 -Elf32Header class and MemoryMap class porting completed!
 -Elf32ProgramHeader class completed!
+-Some rewrite to memory class
+-Mostly finised Elf32SectionHeader
 
 24/05/2022
 ==========

@@ -95,6 +95,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <AdditionalDependencies>OpenGL32.lib;GLU32.lib;../../Output/$(Configuration)/$(Platform)/glew.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -108,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <AdditionalDependencies>OpenGL32.lib;GLU32.lib;../../Output/$(Configuration)/$(Platform)/glew.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -123,6 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -140,6 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -151,9 +155,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\main\Cpu.cpp" />
     <ClCompile Include="..\..\src\main\format\Elf32Header.cpp" />
+    <ClCompile Include="..\..\src\main\format\Elf32ProgramHeader.cpp" />
+    <ClCompile Include="..\..\src\main\format\Elf32SectionHeader.cpp" />
     <ClCompile Include="..\..\src\main\main.cpp" />
     <ClCompile Include="..\..\src\main\Memory.cpp" />
-    <ClCompile Include="..\..\src\main\Recompiler.cpp" />
     <ClCompile Include="..\..\src\main\Video.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,10 +167,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\main\Cpu.h" />
     <ClInclude Include="..\..\src\main\format\Elf32Header.h" />
+    <ClInclude Include="..\..\src\main\format\Elf32ProgramHeader.h" />
+    <ClInclude Include="..\..\src\main\format\Elf32SectionHeader.h" />
     <ClInclude Include="..\..\src\main\Memory.h" />
     <ClInclude Include="..\..\src\main\MemoryMap.h" />
     <ClInclude Include="..\..\src\main\PCSPCommon.h" />
-    <ClInclude Include="..\..\src\main\Recompiler.h" />
     <ClInclude Include="..\..\src\main\Singleton.h" />
     <ClInclude Include="..\..\src\main\Video.h" />
   </ItemGroup>

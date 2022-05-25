@@ -88,7 +88,7 @@ bool CVideo::Initialize() {
 		return false;
 	}
 
-	vram = Memory.vram;
+	vram = Memory::videoMemory;
 
 	glGenTextures(1, &texFb);
 
@@ -199,12 +199,12 @@ PspDisplayErrorCodes CVideo::sceDisplaySetFrameBuf(
 		pspPitch = bufferwidth;
 
 	topaddr &= 0x0FFFFFFF;
-	if (topaddr < VramStart || (topaddr + pspPitch * pspHeight * 4) > VramEnd ||
+        if (topaddr < MemoryMap::START_VRAM || (topaddr + pspPitch * pspHeight * 4) > MemoryMap::END_VRAM ||
 		topaddr & (bufferwidth - 1))
 	{
 		return SCE_DISPLAY_ERROR_POINTER;
-	}
-	else pspAddr = topaddr - VramStart;
+	} else
+            pspAddr = topaddr - MemoryMap::START_VRAM;
 
 
 	if (pixelFormatFb != pixelformat ||

@@ -84,7 +84,7 @@ void CCpu::Step() {
 }
 
 void CCpu::Interpret() {
-	instr = Memory.Read32(pc);
+    instr = Memory::read32(pc);
 	mainTable[instr >> 26]();
 }
 
@@ -129,10 +129,10 @@ void CCpu::SYSCALL() {
 			u32 i;
 			u32 addr = Cpu.gpr[4];
 			for (i = 0; i < Cpu.gpr[5]; ++i) {
-				Memory.Write32(addr, 0);
-				Memory.Write32(addr + 4, 0);
-				Memory.Write8(addr + 8, 0);
-				Memory.Write8(addr + 9, 0);
+				Memory::write32(addr, 0);
+				Memory::write32(addr + 4, 0);
+				Memory::write8(addr + 8, 0);
+				Memory::write8(addr + 9, 0);
 				addr += 16;
 			}
 			Cpu.gpr[2] = i;
@@ -206,7 +206,7 @@ void CCpu::BGTZL() {
 	else Cpu.npc = Cpu.pc + 4;
 }
 
-void CCpu::LW()  { u32 t = Memory.Read32(Rs + (s16)Im); if (_Rt_) Rt = t; }
-void CCpu::LBU() { u8 t = Memory.Read8(Rs + (s16)Im); if (_Rt_)Rt = t; }
-void CCpu::SB()  { Memory.Write8(Rs + (s16)Im, (u8)Rt); }
-void CCpu::SW()  { Memory.Write32(Rs + (s16)Im, Rt); }
+void CCpu::LW()  { u32 t = Memory::read32(Rs + (s16)Im); if (_Rt_) Rt = t; }
+void CCpu::LBU() { u8 t = Memory::read8(Rs + (s16)Im); if (_Rt_)Rt = t; }
+void CCpu::SB() { Memory::write8(Rs + (s16)Im, (u8)Rt); }
+void CCpu::SW() { Memory::write32(Rs + (s16)Im, Rt); }
