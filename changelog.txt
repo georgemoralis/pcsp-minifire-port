@@ -2,6 +2,7 @@
 ==========
 -Stared to play with loader a bit
 -Elf32Header class and MemoryMap class porting completed!
+-Elf32ProgramHeader class completed!
 
 24/05/2022
 ==========
