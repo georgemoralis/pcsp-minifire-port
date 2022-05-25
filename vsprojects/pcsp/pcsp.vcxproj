@@ -163,6 +163,7 @@
     <ClInclude Include="..\..\src\main\Cpu.h" />
     <ClInclude Include="..\..\src\main\format\Elf32Header.h" />
     <ClInclude Include="..\..\src\main\Memory.h" />
+    <ClInclude Include="..\..\src\main\MemoryMap.h" />
     <ClInclude Include="..\..\src\main\PCSPCommon.h" />
     <ClInclude Include="..\..\src\main\Recompiler.h" />
     <ClInclude Include="..\..\src\main\Singleton.h" />

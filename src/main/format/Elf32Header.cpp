@@ -1,185 +1,110 @@
 /*
-*  25/05/2022 - synced with jpcsp 23/05/2022 - 86c10922
+*  25/05/2022 - synced with jpcsp 23/05/2022 - 86c10922 Completed!
 */
+#include "..\PCSPCommon.h"
 #include "Elf32Header.h"
 
-/*TODO*/  //    private int e_magic;
-/*TODO*/  //    private int e_class;
-/*TODO*/  //    private int e_data;
-/*TODO*/  //    private int e_idver;
-/*TODO*/  //    private byte[] e_pad = new byte[9];
-/*TODO*/  //    private int e_type;
-/*TODO*/  //    private int e_machine;
-/*TODO*/  //    private int e_version;
-/*TODO*/  //    private int e_entry;
-/*TODO*/  //    private int e_phoff;
-/*TODO*/  //    private int e_shoff;
-/*TODO*/  //    private int e_flags;
-/*TODO*/  //    private int e_ehsize;
-/*TODO*/  //    private int e_phentsize;
-/*TODO*/  //    private int e_phnum;
-/*TODO*/  //    private int e_shentsize;
-/*TODO*/  //    private int e_shnum;
-/*TODO*/  //    private int e_shstrndx;
-/*TODO*/  //
-/*TODO*/  //    private void read(ByteBuffer f) throws IOException {
-/*TODO*/  //        if (f.capacity() == 0) {
-/*TODO*/  //            return;
-/*TODO*/  //        }
-/*TODO*/  //        e_magic = readUWord(f);
-/*TODO*/  //        e_class = readUByte(f);
-/*TODO*/  //        e_data = readUByte(f);
-/*TODO*/  //        e_idver = readUByte(f);
-/*TODO*/  //        f.get(getE_pad());         // can raise EOF exception
-/*TODO*/  //        e_type = readUHalf(f);
-/*TODO*/  //        e_machine = readUHalf(f);
-/*TODO*/  //        e_version = readUWord(f);
-/*TODO*/  //        e_entry = readUWord(f);
-/*TODO*/  //        e_phoff = readUWord(f);
-/*TODO*/  //        e_shoff = readUWord(f);
-/*TODO*/  //        e_flags = readUWord(f);
-/*TODO*/  //        e_ehsize = readUHalf(f);
-/*TODO*/  //        e_phentsize = readUHalf(f);
-/*TODO*/  //        e_phnum = readUHalf(f);
-/*TODO*/  //        e_shentsize = readUHalf(f);
-/*TODO*/  //        e_shnum = readUHalf(f);
-/*TODO*/  //        e_shstrndx = readUHalf(f);
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public Elf32Header(ByteBuffer f) throws IOException {
-/*TODO*/  //        read(f);
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public static int sizeof() {
-/*TODO*/  //        return 52;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public boolean isValid(){
-/*TODO*/  //        return getE_magic() == ELF_MAGIC;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public boolean isMIPSExecutable(){
-/*TODO*/  //        return getE_machine() == E_MACHINE_MIPS;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public boolean isPRXDetected(){
-/*TODO*/  //        return getE_type() == ET_SCE_PRX;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public boolean requiresRelocation(){
-/*TODO*/  //        return isPRXDetected() || getE_entry() < MemoryMap.START_RAM;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    @Override
-/*TODO*/  //    public String toString() {
-/*TODO*/  //        StringBuilder str = new StringBuilder();
-/*TODO*/  //        str.append("-----ELF HEADER---------" + "\n");
-/*TODO*/  //        str.append("e_magic " + "\t " + Utilities.formatString("long", Long.toHexString(getE_magic() &
-          //        0xFFFFFFFFL).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_class " + "\t " + Utilities.integerToHex(getE_class() & 0xFF) + "\n");
-/*TODO*/  //        // str.append("e_class " + "\t " +  Utilities.formatString("byte", Integer.toHexString(e_class &
-          //        0xFF ).toUpperCase())+ "\n");
-/*TODO*/  //        str.append("e_data " + "\t\t " + Utilities.formatString("byte", Integer.toHexString(getE_data() &
-          //        0xFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_idver " + "\t " + Utilities.formatString("byte", Integer.toHexString(getE_idver() &
-          //        0xFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_type " + "\t\t " + Utilities.formatString("short", Integer.toHexString(getE_type() &
-          //        0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_machine " + "\t " + Utilities.formatString("short", Integer.toHexString(getE_machine()
-          //        & 0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_version " + "\t " + Utilities.formatString("long", Long.toHexString(getE_version() &
-          //        0xFFFFFFFFL).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_entry " + "\t " + Utilities.formatString("long", Long.toHexString(getE_entry() &
-          //        0xFFFFFFFFL).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_phoff " + "\t " + Utilities.formatString("long", Long.toHexString(getE_phoff() &
-          //        0xFFFFFFFFL).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_shoff " + "\t " + Utilities.formatString("long", Long.toHexString(getE_shoff() &
-          //        0xFFFFFFFFL).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_flags " + "\t " + Utilities.formatString("long", Long.toHexString(getE_flags() &
-          //        0xFFFFFFFFL).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_ehsize " + "\t " + Utilities.formatString("short", Integer.toHexString(getE_ehsize() &
-          //        0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_phentsize " + "\t " + Utilities.formatString("short",
-          //        Integer.toHexString(getE_phentsize() & 0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_phnum " + "\t " + Utilities.formatString("short", Integer.toHexString(getE_phnum() &
-          //        0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_shentsize " + "\t " + Utilities.formatString("short",
-          //        Integer.toHexString(getE_shentsize() & 0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_shnum " + "\t " + Utilities.formatString("short", Integer.toHexString(getE_shnum() &
-          //        0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        str.append("e_shstrndx " + "\t " + Utilities.formatString("short",
-          //        Integer.toHexString(getE_shstrndx() & 0xFFFF).toUpperCase()) + "\n");
-/*TODO*/  //        return str.toString();
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_magic() {
-/*TODO*/  //        return e_magic;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_class() {
-/*TODO*/  //        return e_class;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_data() {
-/*TODO*/  //        return e_data;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_idver() {
-/*TODO*/  //        return e_idver;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public byte[] getE_pad() {
-/*TODO*/  //        return e_pad;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_type() {
-/*TODO*/  //        return e_type;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_machine() {
-/*TODO*/  //        return e_machine;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_version() {
-/*TODO*/  //        return e_version;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_entry() {
-/*TODO*/  //        return e_entry;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_phoff() {
-/*TODO*/  //        return e_phoff;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_shoff() {
-/*TODO*/  //        return e_shoff;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_flags() {
-/*TODO*/  //        return e_flags;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_ehsize() {
-/*TODO*/  //        return e_ehsize;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_phentsize() {
-/*TODO*/  //        return e_phentsize;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_phnum() {
-/*TODO*/  //        return e_phnum;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_shentsize() {
-/*TODO*/  //        return e_shentsize;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_shnum() {
-/*TODO*/  //        return e_shnum;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getE_shstrndx() {
-/*TODO*/  //        return e_shstrndx;
-/*TODO*/  //    }
+
+Elf32Header::Elf32Header() { }
+
+Elf32Header::Elf32Header(std::ifstream &f) { read(f); }
+
+Elf32Header::~Elf32Header() {}
+
+void Elf32Header::read(std::ifstream &f) {
+    if (!(f.peek() == std::ifstream::traits_type::eof())) {  // if not empty
+        f.read((char *)&data, sizeof(data));
+    }
+}
+
+const size_t Elf32Header::sizeOf() { return sizeof(data); }
+
+bool Elf32Header::isValid() const { return data.e_magic == ELF_MAGIC; }
+
+bool Elf32Header::isMIPSExecutable() const { return data.e_machine == E_MACHINE_MIPS; }
+bool Elf32Header::isPRXDetected() const { return data.e_type == ET_SCE_PRX; }
+
+bool Elf32Header::requiresRelocation() const { return isPRXDetected() || getE_entry() < MemoryMap::START_RAM; }
+
+std::string Elf32Header::toString() const {
+    std::string str = "--------ELF HEADER--------\n";
+    char tmp[128];
+
+    sprintf(tmp, "e_magic     0x%08X\n", data.e_magic);
+    str.append(tmp);
+    sprintf(tmp, "e_class     0x%02X\n", data.e_class);
+    str.append(tmp);
+    sprintf(tmp, "e_data      0x%02X\n", data.e_data);
+    str.append(tmp);
+    sprintf(tmp, "e_idver     0x%02X\n", data.e_idver);
+    str.append(tmp);
+    sprintf(tmp, "e_type      0x%04X\n", data.e_type);
+    str.append(tmp);
+    sprintf(tmp, "e_machine   0x%04X\n", data.e_machine);
+    str.append(tmp);
+    sprintf(tmp, "e_version   0x%08X\n", data.e_version);
+    str.append(tmp);
+    sprintf(tmp, "e_entry     0x%08X\n", data.e_entry);
+    str.append(tmp);
+    sprintf(tmp, "e_phoff     0x%08X\n", data.e_phoff);
+    str.append(tmp);
+    sprintf(tmp, "e_shoff     0x%08X\n", data.e_shoff);
+    str.append(tmp);
+    sprintf(tmp, "e_flags     0x%08X\n", data.e_flags);
+    str.append(tmp);
+    sprintf(tmp, "e_ehsize    0x%04X\n", data.e_ehsize);
+    str.append(tmp);
+    sprintf(tmp, "e_phentsize 0x%04X\n", data.e_phentsize);
+    str.append(tmp);
+    sprintf(tmp, "e_phnum     0x%04X\n", data.e_phnum);
+    str.append(tmp);
+    sprintf(tmp, "e_shentsize 0x%04X\n", data.e_shentsize);
+    str.append(tmp);
+    sprintf(tmp, "e_shnum     0x%04X\n", data.e_shnum);
+    str.append(tmp);
+    sprintf(tmp, "e_shstrndx  0x%04X\n", data.e_shstrndx);
+    str.append(tmp);
+
+    return str;
+}
+
+u32 Elf32Header::getE_magic() const { return data.e_magic; }
+
+u8 Elf32Header::getE_class() const { return data.e_class; }
+
+u8 Elf32Header::getE_data() const { return data.e_data; }
+
+u8 Elf32Header::getE_idver() const { return data.e_idver; }
+
+std::vector<u8> Elf32Header::getE_pad() const {
+    std::vector<u8> pad(9);
+    memcpy(&pad[0], &data.e_pad[0], 9);
+    return pad;
+}
+
+u16 Elf32Header::getE_type() const { return data.e_type; }
+
+u16 Elf32Header::getE_machine() const { return data.e_machine; }
+
+u32 Elf32Header::getE_version() const { return data.e_version; }
+
+u32 Elf32Header::getE_entry() const { return data.e_entry; }
+
+u32 Elf32Header::getE_phoff() const { return data.e_phoff; }
+
+u32 Elf32Header::getE_shoff() const { return data.e_shoff; }
+
+u32 Elf32Header::getE_flags() const { return data.e_flags; }
+
+u16 Elf32Header::getE_ehsize() const { return data.e_ehsize; }
+
+u16 Elf32Header::getE_phentsize() const { return data.e_phentsize; }
+
+u16 Elf32Header::getE_phnum() const { return data.e_phnum; }
+
+u16 Elf32Header::getE_shentsize() { return data.e_shentsize; }
+
+u16 Elf32Header::getE_shnum() const { return data.e_shnum; }
+
+u16 Elf32Header::getE_shstrndx() const { return data.e_shstrndx; }
+

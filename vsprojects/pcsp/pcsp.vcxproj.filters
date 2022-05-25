@@ -20,6 +20,7 @@
     <ClInclude Include="..\..\src\main\format\Elf32Header.h">
       <Filter>format</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\main\MemoryMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

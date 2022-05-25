@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <tchar.h>
 #include <assert.h>
+#include <fstream>
+#include <vector>
 
 typedef __int8  s8;
 typedef __int16 s16;
@@ -20,3 +22,5 @@ typedef unsigned __int32 u32;
 typedef unsigned __int64 u64;
 
 #include "Singleton.h"
+#include "MemoryMap.h"
+

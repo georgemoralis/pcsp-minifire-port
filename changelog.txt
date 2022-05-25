@@ -1,3 +1,8 @@
+25/05/2022
+==========
+-Stared to play with loader a bit
+-Elf32Header class and MemoryMap class porting completed!
+
 24/05/2022
 ==========
 -We can now render to glfx window (using old opengl2 code ...) it is not perfect but it works
