@@ -1,52 +1,36 @@
 /*
- *  26/05/2022 - synced with jpcsp 23/05/2022 - 86c10922
+ *  26/05/2022 - synced with jpcsp 23/05/2022 - 86c10922 - Small TODO requires
  */
+#include "..\PCSPCommon.h"
+#include "..\Memory.h"
 #include "PSPModuleInfo.h"
 
+PSPModuleInfo::PSPModuleInfo() {}
 
-/*TODO*/  // public class PSPModuleInfo extends pspAbstractMemoryMappedStructure {
-/*TODO*/  //	private static final int NAME_LENGTH = 28;
-/*TODO*/  //    private int m_attr;
-/*TODO*/  //    private int m_version;
-/*TODO*/  //    private int m_gp;
-/*TODO*/  //    private int m_exports;
-/*TODO*/  //    private int m_exp_end;
-/*TODO*/  //    private int m_imports;
-/*TODO*/  //    private int m_imp_end;
-/*TODO*/  //    private String m_namez = ""; // String version of m_name
-/*TODO*/  //
-/*TODO*/  //    public void read(ByteBuffer f) throws IOException {
-/*TODO*/  //        m_attr = readUHalf(f);
-/*TODO*/  //        m_version = readUHalf(f);
-/*TODO*/  //        byte[] m_name = new byte[NAME_LENGTH];
-/*TODO*/  //        f.get(m_name);
-/*TODO*/  //        m_gp = readUWord(f);
-/*TODO*/  //        m_exports = readUWord(f); // .lib.ent
-/*TODO*/  //        m_exp_end = readUWord(f);
-/*TODO*/  //        m_imports = readUWord(f); // .lib.stub
-/*TODO*/  //        m_imp_end = readUWord(f);
-/*TODO*/  //
-/*TODO*/  //        // Convert the array of bytes used for the module name to a Java String
-/*TODO*/  //        // Calculate the length of the printable portion of the string, otherwise
-/*TODO*/  //        // any extra trailing characters may be printed as garbage.
-/*TODO*/  //        int len = 0;
-/*TODO*/  //        while (len < 28 && m_name[len] != 0)
-/*TODO*/  //            len++;
-/*TODO*/  //        m_namez = new String(m_name, 0, len);
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //	@Override
-/*TODO*/  //	protected void read() {
-/*TODO*/  //		m_attr = read16();
-/*TODO*/  //		m_version = read16();
-/*TODO*/  //		m_namez = readStringNZ(NAME_LENGTH);
-/*TODO*/  //		m_gp = read32();
-/*TODO*/  //		m_exports = read32();
-/*TODO*/  //		m_exp_end = read32();
-/*TODO*/  //		m_imports = read32();
-/*TODO*/  //		m_imp_end = read32();
-/*TODO*/  //	}
-/*TODO*/  //
+PSPModuleInfo::PSPModuleInfo(std::ifstream &f) { read(f); }
+
+PSPModuleInfo::PSPModuleInfo(u32 address) { read(address); }
+
+PSPModuleInfo::~PSPModuleInfo() {}
+
+void PSPModuleInfo::read(std::ifstream &f) {
+    f.read((char *)&data, sizeof(data));
+
+    // Convert the array of bytes used for the module to C++ std::string.
+    // Calculate the length of printable portion of the string, otherwise
+    // any extra trailing characters may be printed as garbage.
+    size_t len = 0;
+    while (len < 28 && data.m_name[len] != 0) ++len;
+    m_namez = std::string(data.m_name, 0, len);
+}
+
+void PSPModuleInfo::read(u32 address) { //JPCSP Inheritance that from pspAbstractMemoryMappedStructure
+    memcpy(&data, Memory::getPointer(address), sizeof(data));
+
+    size_t len = 0;
+    while (len < 28 && data.m_name[len] != 0) ++len;
+    m_namez = std::string(data.m_name, 0, len);
+}
 /*TODO*/  //	@Override
 /*TODO*/  //	protected void write() {
 /*TODO*/  //		write16((short) m_attr);
@@ -59,41 +43,20 @@
 /*TODO*/  //		write32(m_imp_end);
 /*TODO*/  //	}
 /*TODO*/  //
-/*TODO*/  //	public int getM_attr() {
-/*TODO*/  //        return m_attr;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getM_version() {
-/*TODO*/  //        return m_version;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getM_gp() {
-/*TODO*/  //        return m_gp;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getM_exports() {
-/*TODO*/  //        return m_exports;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getM_exp_end() {
-/*TODO*/  //        return m_exp_end;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getM_imports() {
-/*TODO*/  //        return m_imports;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public int getM_imp_end() {
-/*TODO*/  //        return m_imp_end;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public String getM_namez() {
-/*TODO*/  //        return m_namez;
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //	@Override
-/*TODO*/  //	public int sizeof() {
-/*TODO*/  //		return 52;
-/*TODO*/  //	}
-/*TODO*/  //}
-/*TODO*/  //
+u16 PSPModuleInfo::getM_attr() const { return data.m_attr; }
+
+u16 PSPModuleInfo::getM_version() const { return data.m_version; }
+
+u32 PSPModuleInfo::getM_gp() const { return data.m_gp; }
+
+u32 PSPModuleInfo::getM_exports() const { return data.m_exports; }
+
+u32 PSPModuleInfo::getM_exp_end() const { return data.m_exp_end; }
+
+u32 PSPModuleInfo::getM_imports() const { return data.m_imports; }
+
+u32 PSPModuleInfo::getM_imp_end() const { return data.m_imp_end; }
+
+std::string PSPModuleInfo::getM_namez() const { return m_namez; }
+
+const size_t PSPModuleInfo::sizeOf() { return sizeof(data); }
