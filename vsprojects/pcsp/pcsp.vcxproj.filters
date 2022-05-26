@@ -26,6 +26,9 @@
     <ClCompile Include="..\..\src\main\format\PSP.cpp">
       <Filter>format</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\main\format\PSF.cpp">
+      <Filter>format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\main\Cpu.h" />
@@ -53,6 +56,9 @@
       <Filter>format</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\main\format\PSP.h">
+      <Filter>format</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\main\format\PSF.h">
       <Filter>format</Filter>
     </ClInclude>
   </ItemGroup>

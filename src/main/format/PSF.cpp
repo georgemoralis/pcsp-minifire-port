@@ -1,44 +1,26 @@
+/*
+ *  26/05/2022 - synced with jpcsp 23/05/2022 - 86c10922 - Very initial implementation
+ */
+#include "..\PCSPCommon.h"
 #include "PSF.h"
 
-
-/*TODO*/  //    private int psfOffset;
-/*TODO*/  //    private int size;
-/*TODO*/  //
-/*TODO*/  //    private boolean sizeDirty;
-/*TODO*/  //    private boolean tablesDirty;
-/*TODO*/  //
-/*TODO*/  //    private int ident;
-/*TODO*/  //    private int version; // yapspd: 0x1100. actual: 0x0101.
-/*TODO*/  //    private int keyTableOffset;
-/*TODO*/  //    private int valueTableOffset;
-/*TODO*/  //    private int indexEntryCount;
-/*TODO*/  //
 /*TODO*/  //    private LinkedList<PSFKeyValuePair> pairList;
 /*TODO*/  //
-/*TODO*/  //    public final static int PSF_IDENT = 0x46535000;
 /*TODO*/  //
-/*TODO*/  //    public final static int PSF_DATA_TYPE_BINARY = 0;
-/*TODO*/  //    public final static int PSF_DATA_TYPE_STRING = 2;
-/*TODO*/  //    public final static int PSF_DATA_TYPE_INT32 = 4;
-/*TODO*/  //
-/*TODO*/  //    public PSF(int psfOffset) {
-/*TODO*/  //        this.psfOffset = psfOffset;
-/*TODO*/  //        size = 0;
-/*TODO*/  //
-/*TODO*/  //        sizeDirty = true;
-/*TODO*/  //        tablesDirty = true;
-/*TODO*/  //
+PSF::PSF(u32 psfOffset) : psfOffset(psfOffset) 
+{ 
+    size = 0;
+    sizeDirty = true;
+    tablesDirty = true;
 /*TODO*/  //        ident = PSF_IDENT;
 /*TODO*/  //        version = 0x0101;
-/*TODO*/  //
 /*TODO*/  //        pairList = new LinkedList<PSFKeyValuePair>();
-/*TODO*/  //
-/*TODO*/  //    }
-/*TODO*/  //
-/*TODO*/  //    public PSF() {
-/*TODO*/  //        this(0);
-/*TODO*/  //    }
-/*TODO*/  //
+}
+
+PSF::~PSF() {}
+
+PSF::PSF() { PSF(0); }
+
 /*TODO*/  //    /** f.position() is undefined after calling this */
 /*TODO*/  //    public void read(ByteBuffer f) throws IOException {
 /*TODO*/  //        psfOffset = f.position();
