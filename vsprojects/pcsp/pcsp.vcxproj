@@ -159,6 +159,7 @@
     <ClCompile Include="..\..\src\main\format\Elf32ProgramHeader.cpp" />
     <ClCompile Include="..\..\src\main\format\Elf32Relocate.cpp" />
     <ClCompile Include="..\..\src\main\format\Elf32SectionHeader.cpp" />
+    <ClCompile Include="..\..\src\main\format\PSP.cpp" />
     <ClCompile Include="..\..\src\main\format\PSPModuleInfo.cpp" />
     <ClCompile Include="..\..\src\main\main.cpp" />
     <ClCompile Include="..\..\src\main\Memory.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="..\..\src\main\format\Elf32ProgramHeader.h" />
     <ClInclude Include="..\..\src\main\format\Elf32Relocate.h" />
     <ClInclude Include="..\..\src\main\format\Elf32SectionHeader.h" />
+    <ClInclude Include="..\..\src\main\format\PSP.h" />
     <ClInclude Include="..\..\src\main\format\PSPModuleInfo.h" />
     <ClInclude Include="..\..\src\main\Memory.h" />
     <ClInclude Include="..\..\src\main\MemoryMap.h" />
