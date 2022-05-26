@@ -20,6 +20,9 @@
     <ClCompile Include="..\..\src\main\format\PSPModuleInfo.cpp">
       <Filter>format</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\main\format\Elf32Relocate.cpp">
+      <Filter>format</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\main\Cpu.h" />
@@ -41,6 +44,9 @@
       <Filter>format</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\main\format\PSPModuleInfo.h">
+      <Filter>format</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\main\format\Elf32Relocate.h">
       <Filter>format</Filter>
     </ClInclude>
   </ItemGroup>
