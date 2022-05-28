@@ -4,6 +4,7 @@
 
 namespace Memory {
 
+static u32 addressMask = 0x1FFFFFFF;
 bool initialize();
 void finalize();
 void reset();

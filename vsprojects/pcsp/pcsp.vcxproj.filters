@@ -29,10 +29,12 @@
     <ClCompile Include="..\..\src\main\format\PSF.cpp">
       <Filter>format</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\main\graphics\FrameBufferSettings.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\main\Cpu.h" />
-    <ClInclude Include="..\..\src\main\Memory.h" />
     <ClInclude Include="..\..\src\main\PCSPCommon.h" />
     <ClInclude Include="..\..\src\main\Singleton.h" />
     <ClInclude Include="..\..\src\main\Video.h" />
@@ -61,6 +63,10 @@
     <ClInclude Include="..\..\src\main\format\PSF.h">
       <Filter>format</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\main\Memory.h" />
+    <ClInclude Include="..\..\src\main\graphics\FrameBufferSettings.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -68,6 +74,9 @@
   <ItemGroup>
     <Filter Include="format">
       <UniqueIdentifier>{66f613cc-370c-45c9-a828-a08ddcf1dbe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphics">
+      <UniqueIdentifier>{8174ff1c-c127-44ff-a4ac-381b44365118}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
